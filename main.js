@@ -1,0 +1,14 @@
+const toggle=document.querySelector('.menu-toggle');
+const nav=document.querySelector('.nav-links');
+toggle?.addEventListener('click',()=>{const open=nav.classList.toggle('open');toggle.setAttribute('aria-expanded',String(open));toggle.setAttribute('aria-label',open?'Close menu':'Open menu')});
+document.querySelectorAll('.nav-links a').forEach(a=>a.addEventListener('click',()=>{nav.classList.remove('open');toggle?.setAttribute('aria-expanded','false')}));
+const observer=new IntersectionObserver(entries=>entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add('visible');observer.unobserve(entry.target)}}),{threshold:.12});
+document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
+const lightbox=document.querySelector('.lightbox');
+const lightboxImg=lightbox?.querySelector('img');
+document.querySelectorAll('.gallery-item').forEach(item=>item.addEventListener('click',()=>{lightboxImg.src=item.dataset.src;lightbox.hidden=false;document.body.style.overflow='hidden'}));
+const closeLightbox=()=>{lightbox.hidden=true;lightboxImg.src='';document.body.style.overflow=''};
+lightbox?.querySelector('.lightbox-close').addEventListener('click',closeLightbox);
+lightbox?.addEventListener('click',e=>{if(e.target===lightbox)closeLightbox()});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!lightbox.hidden)closeLightbox()});
+document.getElementById('year').textContent=new Date().getFullYear();
